@@ -1,3 +1,24 @@
+html {
+  font-size: 12px;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+button {
+  border: none;
+  width: 35px;
+  height: 35px;
+  color: inherit;
+  border-radius: 4px;
+}
+
+button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
 #app {
   display: flex;
   flex-direction: column;
@@ -7,7 +28,12 @@
 }
 
 .calculator {
-  min-width: 20%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid black;
+  border-radius: 5px;
+  gap: 10px;
 }
 
 .display-section {
@@ -15,14 +41,58 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  padding: 16px;
 }
 
 .display {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.operation {
+  font-size: 1.15rem;
+}
+
+.result {
+  font-size: 3rem;
 }
 
 .input-section {
-  min-height: 60%;
+  display: flex;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #abb2bf;
+  padding: 6px;
+}
+
+.input-section button {
+  background-color: #dfdede;
+}
+
+.numpad {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-right: 15px;
+}
+
+.num-row {
+  display: flex;
+  gap: 5px;
+}
+
+.num-row:last-child {
+  align-self: center;
+}
+
+.operators {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: rgb(190, 80, 70);
+}
+
+.operator:first-child {
+  color: rgb(97, 175, 239);
 }
