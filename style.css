@@ -48,6 +48,7 @@ button:hover {
   flex-direction: column;
   gap: 6px;
   text-align: right;
+  min-height: 60px;
 }
 
 .operation {
