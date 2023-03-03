@@ -65,6 +65,7 @@ button:hover {
   border-radius: 8px;
   background-color: #abb2bf;
   padding: 6px;
+  justify-content: center;
 }
 
 .input-section button {
