@@ -5,6 +5,13 @@ const DIVIDE = "/";
 const EQUAL = "=";
 const CLEAR = "clear";
 
+const operatorMap = {
+  [ADD]: "&plus;",
+  [SUBTRACT]: "&minus;",
+  [MULTIPLY]: "&times;",
+  [DIVIDE]: "&divide;",
+};
+
 const calculator = {
   operand1: null,
   operand2: null,
@@ -56,14 +63,30 @@ function main() {
     button.hasAttribute("data-operator")
   );
   const result = document.querySelector(".result");
+  const operationElem = document.querySelector(".operation");
   operandButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       if (!calculator.operand1) {
-        calculator.operand1 = parseInt(event.target.dataset.number);
-      } else if (!calculator.operand2) {
-        calculator.operand2 = parseInt(event.target.dataset.number);
+        calculator.operand1 = event.target.dataset.number;
+        operationElem.textContent = `${event.target.dataset.number}`;
+      } else if (calculator.operator !== null && !calculator.operand2) {
+        calculator.operand2 = event.target.dataset.number;
+        operationElem.textContent += `${event.target.dataset.number}`;
+      } else if (!calculator.operator && calculator.operand1 !== null) {
+        const inputNum = event.target.dataset.number;
+        if (calculator.operand1 === "0") {
+          return;
+        }
+        calculator.operand1 += event.target.dataset.number;
+        operationElem.textContent += `${event.target.dataset.number}`;
+      } else if (calculator.operator !== null && calculator.operand2 !== null) {
+        const inputNum = event.target.dataset.number;
+        if (calculator.operand2 === "0") {
+          return;
+        }
+        calculator.operand2 += event.target.dataset.number;
+        operationElem.textContent += `${event.target.dataset.number}`;
       }
-      console.table(calculator);
     });
   });
   operatorButtons
@@ -78,8 +101,9 @@ function main() {
           (calculator.operand1 !== null || calculator.operand2 !== null)
         ) {
           calculator.operator = event.target.dataset.operator;
+          const operationElem = document.querySelector(".operation");
+          operationElem.innerHTML += ` ${operatorMap[calculator.operator]} `;
         }
-        console.table(calculator);
       });
     });
   const equalButton = operatorButtons.find(
@@ -89,11 +113,12 @@ function main() {
     if (!calculator.operand1 && !calculator.operand2 && !calculator.operator) {
       return;
     }
-    result.textContent = operate(
+    calculator.result = operate(
       calculator.operator,
       calculator.operand1,
       calculator.operand2
     );
+    result.textContent = calculator.result;
     clearCalculator();
   });
 
@@ -102,6 +127,8 @@ function main() {
   );
   clearButton.addEventListener("click", (event) => {
     clearCalculator();
+    operationElem.textContent = "";
+    result.textContent = "";
   });
 }
 
