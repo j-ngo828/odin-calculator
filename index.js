@@ -44,6 +44,9 @@ function operate(operator, op1, op2) {
     case MULTIPLY:
       return multiply(op1, op2);
     case DIVIDE:
+      if (op2 === 0) {
+        return "ERROR";
+      }
       return divide(op1, op2);
   }
 }
@@ -98,12 +101,19 @@ function main() {
         if (calculator.operand1 === "0") {
           return;
         }
-        calculator.operand1 += event.target.dataset.number;
+        if (calculator.result !== null) {
+          calculator.operand1 = event.target.dataset.number;
+          calculator.result = null;
+        } else {
+          calculator.operand1 += event.target.dataset.number;
+        }
       } else if (calculator.operator !== null && calculator.operand2 !== null) {
         if (calculator.operand2 === "0") {
           return;
         }
         calculator.operand2 += event.target.dataset.number;
+      } else if (calculator.result !== null) {
+        calculator.operand1 = event.target.dataset.number;
       }
       renderOperation();
     });
@@ -121,6 +131,27 @@ function main() {
         ) {
           calculator.operator = event.target.dataset.operator;
         }
+        if (calculator.operator && calculator.operand1 && calculator.operand2) {
+          calculator.result = operate(
+            calculator.operator,
+            parseInt(calculator.operand1),
+            parseInt(calculator.operand2)
+          ).toString();
+          if (calculator.result === "ERROR") {
+            alert("Error: Division by 0");
+            calculator.operand2 = null;
+            calculator.result = null;
+            renderOperation();
+            return;
+          }
+          renderResult();
+          calculator.operand1 = calculator.result;
+          calculator.operator = event.target.dataset.operator;
+          calculator.operand2 = null;
+          calculator.result = null;
+        } else if (calculator.operator && !calculator.operand2) {
+          calculator.operator = event.target.dataset.operator;
+        }
         renderOperation();
       });
     });
@@ -134,11 +165,20 @@ function main() {
     }
     calculator.result = operate(
       calculator.operator,
-      calculator.operand1,
-      calculator.operand2
-    );
+      parseInt(calculator.operand1),
+      parseInt(calculator.operand2)
+    ).toString();
+    if (calculator.result === "ERROR") {
+      alert("Error: Division by 0");
+      calculator.operand2 = null;
+      calculator.result = null;
+      renderOperation();
+      return;
+    }
     renderResult();
-    clearCalculator();
+    calculator.operand1 = calculator.result;
+    calculator.operand2 = null;
+    calculator.operator = null;
   });
 
   const clearButton = operatorButtons.find(
